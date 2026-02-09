@@ -3,6 +3,6 @@
 /// More dartdocs go here.
 library;
 
-export 'src/owl_mediator_base.dart';
+export 'src/mediator.dart' show Mediator;
 
 // TODO: Export any libraries intended for clients of this package.
