@@ -1,0 +1,5 @@
+# Dart
+.dart_tool/
+pubspec.lock
+/src/build/
+/src/doc/api
