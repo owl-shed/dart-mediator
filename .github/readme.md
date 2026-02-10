@@ -1,5 +1,19 @@
 # Dart mediator
 
+<!-- Do not put the link/image nested tags on new lines as that will count the links as having whitespace which changes the rendering -->
+
+<p align=center>
+  <a title="A link to the latest version of the main pub.dev package for the project." href="https://pub.dev/packages/owl_mediator"><img alt="A status badge for the latest version of the main pub.dev package for the project." src="https://img.shields.io/pub/v/owl_mediator?logo=dart&logoColor=%230175C2&labelColor=%23d7d7d7"></a>
+  <a title="A link to the score rating of the latest version of the main pub.dev package for the project." href="https://pub.dev/packages/owl_mediator/score"><img alt="A status badge for the score rating of the latest version of the main pub.dev package for the project." src="https://img.shields.io/pub/points/owl_mediator?logo=dart&logoColor=%230175C2&labelColor=%23d7d7d7&color=0175C2"></a>
+  <a title="A link to the likes for the latest version of the main pub.dev package for the project." href="https://pub.dev/packages/owl_mediator/score"><img alt="A status badge for the likes for the latest version of the main pub.dev package for the project." src="https://img.shields.io/pub/likes/owl_mediator?logo=dart&logoColor=%230175C2&labelColor=%23d7d7d7"></a>
+</p>
+
+<p align="center"> <!-- Organisation -->
+  <a title="A link to the OwlDomain Discord server." href="https://discord.gg/eXXnjTUPV2"><img alt="Status badge for the OwlDomain discord server." src="https://img.shields.io/discord/1411024983550853162?style=social&logo=discord&label=discord&link=https%3A%2F%2Fdiscord.gg%eXXnjTUPV2"></a>
+</p>
+
+---
+
 This is a dart implementation of the architectural mediator pattern, there are
 a few like it, but this one is mine.
 
