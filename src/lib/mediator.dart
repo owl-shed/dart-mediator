@@ -1,8 +1,16 @@
-/// Support for doing something awesome.
+/// Provides the architectural [Mediator] pattern, with CQRS support.
 ///
-/// More dartdocs go here.
+/// Mini-libraries:
+/// - `command.dart`:
+/// 	- Use [ICommand] to define your commands and their result types.
+/// 	- Use [ICommandHandler] to implement the handlers for your commands.
+/// - `query.dart`:
+/// 	- Use [IQuery] to define your queries and their result types.
+/// 	- Use [IQueryHandler] to implement the handlers for your queries.
 library;
 
-export 'src/mediator.dart' show Mediator;
+import 'command.dart';
+import 'query.dart';
+import 'src/mediator.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+export 'src/mediator.dart' show Mediator;

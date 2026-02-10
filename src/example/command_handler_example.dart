@@ -6,18 +6,18 @@ import 'package:owl_mediator/mediator.dart';
 
 // Create a new command, must implement ICommand<ResultType> only once.
 // The command only needs fields if your handler will require them.
-class GetAsStringCommand implements ICommand<String> {
+class ConvertToStringCommand implements ICommand<String> {
   final int number;
 
-  GetAsStringCommand(this.number);
+  ConvertToStringCommand(this.number);
 }
 
 // Create a new handler for your command, each command should get one, and only one handler.
 // Multiple return types might be supported in the future.
-class GetAsStringCommandHandler
-    implements ICommandHandler<GetAsStringCommand, String> {
+class ConvertToStringCommandHandler
+    implements ICommandHandler<ConvertToStringCommand, String> {
   @override
-  Future<String> handle(GetAsStringCommand request) {
+  Future<String> handle(ConvertToStringCommand request) {
     // Put your handler implementation here.
     // Handlers are async by default to allow for future middleware support.
     String result = request.number.toString();
@@ -28,9 +28,9 @@ class GetAsStringCommandHandler
 // OPTIONAL:
 //	I recommend creating an extension method for your queries to make them
 //	a tiny bit nicer to run. This will hopefully be code-generated later on.
-extension GetAsStringCommandMediator on Mediator {
-  Future<String> getAsString(int number) {
-    return runCommand(GetAsStringCommand(number));
+extension ConvertToStringCommandMediator on Mediator {
+  Future<String> convertToString(int number) {
+    return runCommand(ConvertToStringCommand(number));
   }
 }
 
@@ -40,15 +40,13 @@ void main() async {
 
   // Register the command handler for its command type.
   // This will hopefully be code-generated later on.
-  mediator.registerCommand<GetAsStringCommand, String>(
-    GetAsStringCommandHandler(),
-  );
+  mediator.registerCommand(ConvertToStringCommandHandler());
 
   // Create and run your command.
-  String result1 = await mediator.runCommand(GetAsStringCommand(123));
+  String result1 = await mediator.runCommand(ConvertToStringCommand(123));
   print(result1);
 
   // If you implemented the optional extension method, then you can do this instead.
-  String result2 = await mediator.getAsString(123);
+  String result2 = await mediator.convertToString(123);
   print(result2);
 }

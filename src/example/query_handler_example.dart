@@ -40,7 +40,7 @@ void main() async {
 
   // Register the query handler for its query type.
   // This will hopefully be code-generated later on.
-  mediator.registerQuery<GetAsStringQuery, String>(GetAsStringQueryHandler());
+  mediator.registerQuery(GetAsStringQueryHandler());
 
   // Create and run your query.
   String result1 = await mediator.runQuery(GetAsStringQuery(123));

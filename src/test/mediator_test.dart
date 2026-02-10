@@ -72,7 +72,7 @@ void main() {
           TestQueryHandler<TestQuery<int>, int> handler = TestQueryHandler(
             expectedResult,
           );
-          sut.registerQuery<TestQuery<int>, int>(handler);
+          sut.registerQuery(handler);
 
           int result = await sut.runQuery(TestQuery<int>());
 
@@ -95,7 +95,7 @@ void main() {
           int expectedResult = 1;
           TestCommandHandler<TestCommand<int>, int> handler =
               TestCommandHandler(expectedResult);
-          sut.registerCommand<TestCommand<int>, int>(handler);
+          sut.registerCommand(handler);
 
           int result = await sut.runCommand(TestCommand<int>());
 
