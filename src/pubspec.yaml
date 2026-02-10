@@ -10,6 +10,7 @@ topics:
   - cross-platform
   - async
   - mediator
+  - cqrs
 
 # Author info
 funding:
