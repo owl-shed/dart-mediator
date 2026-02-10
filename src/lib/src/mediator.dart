@@ -1,5 +1,9 @@
 import 'query.dart';
 import 'command.dart';
+import 'event.dart';
+
+typedef EventFuction<T> = Future<void> Function(T);
+typedef WeakEventFunction = WeakReference<Object>;
 
 /// An implementation for the architectural mediator pattern, with CQRS support.
 ///
@@ -20,6 +24,7 @@ import 'command.dart';
 class Mediator {
   final Map<Type, dynamic> _queryHandlers = {};
   final Map<Type, dynamic> _commandHandlers = {};
+  final Map<Type, List<WeakEventFunction>> _eventSubscribers = {};
 
   /// Registers an [IQueryHandler] for a custom [IQuery] type.
   ///
@@ -85,5 +90,37 @@ class Mediator {
 
     ICommandHandler<TCommand, TResult> typedhandler = handler;
     return await typedhandler.handle(command);
+  }
+
+  void subscribe<TEvent extends IEvent>(EventFuction<TEvent> callback) {
+    List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
+    if (subscribers == null) {
+      subscribers = [];
+      _eventSubscribers[TEvent] = subscribers;
+    }
+
+    WeakEventFunction ref = WeakEventFunction(callback);
+    subscribers.add(ref);
+  }
+
+  Future<void> raise<TEvent extends IEvent>(TEvent event) async {
+    List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
+    if (subscribers == null) return;
+
+    List<WeakEventFunction> toRemove = [];
+    for (WeakEventFunction ref in subscribers) {
+      Object? target = ref.target;
+
+      if (target == null) {
+        toRemove.add(ref);
+        continue;
+      }
+
+      EventFuction<TEvent> callback = target as EventFuction<TEvent>;
+      await callback.call(event);
+    }
+
+    toRemove.forEach(subscribers.remove);
+    if (subscribers.isEmpty) _eventSubscribers.remove(TEvent);
   }
 }
