@@ -1,7 +1,7 @@
 name: owl_mediator
 description: An implementation of the architectural mediator pattern, with CQRS support.
 version: 1.0.0
-repository: https://github.com/owl-shed/dart_mediator
+repository: https://github.com/owl-shed/dart-mediator
 
 environment:
   sdk: ^3.10.8
