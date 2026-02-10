@@ -45,3 +45,10 @@ void main() async {
   String result2 = await mediator.convertToString(123);
 }
 ```
+
+
+## Development
+
+This package is being developed on the `develop` branch, the *(default)* `main`
+branch will only be updated either when it's absolutely necessary, or when
+there's a new release.
