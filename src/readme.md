@@ -1,39 +1,45 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A package that implements the architectural mediator pattern, with CQRS
+support. \
+*(This package has nothing to do with owls, except that it was made by one).*
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- CQRS *(command/query request separation)* support.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Install the package in your preferred way.
+- Implement some commands and queries.
+- Register them with the mediator.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+A simple example of how to use the mediator class.
 
 ```dart
-const like = 'sample';
+void main() async {
+  // Create a new mediator, this should only be needed once per your application.
+  Mediator mediator = Mediator();
+
+  // Register the query handler for its query type.
+  // This will hopefully be code-generated later on.
+  mediator.registerQuery(GetAsStringQueryHandler());
+
+  // Create and run your query.
+  String result1 = await mediator.runQuery(GetAsStringQuery(123));
+  print(result1);
+
+  // If you implemented the optional extension method, then you can do this instead.
+  String result2 = await mediator.getAsString(123);
+  print(result2);
+}
 ```
+
+Check out the other examples for more in-depth explanations.
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+This package is maintained over at
+[github.com/owl-shed/dart_mediator](https://github.com/owl-shed/dart_mediator),
+I probably won't accept code PRs but who knows, if you find an issue then let
+me know.
