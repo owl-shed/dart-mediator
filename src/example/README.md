@@ -166,3 +166,77 @@ In order to execute queries through the `Mediator` you have to:
    String result2 = await mediator.getAsString(123);
    print(result2);
    ```
+
+
+## Events
+
+With the `Mediator` class you can also weakly subscribe to events and raise
+them.
+
+1. Create your event:
+   ```dart
+   // Required only when you're creating a new event.
+   import 'package:owl_mediator/events.dart';
+
+   // Create a new event, must implement IEvent.
+   // The event only needs fields if the event subscribers will require them.
+   class NumberPickedEvent implements IEvent {
+     final int number;
+
+     NumberPickedEvent(this.number);
+   }
+   ```
+
+   Optionally you can also create an extension method to make raising your event
+   slightly nicer:
+   ```dart
+   // Required to add an extension method on the mediator.
+   import 'package:owl_mediator/mediator.dart';
+
+   // OPTIONAL:
+   //	I recommend creating an extension method for your events to make them
+   //	a tiny bit nicer to raise. This will hopefully be code-generated later on.
+   extension NumberPickedEventMediator on Mediator {
+      Future<void> raiseNumberPicked(int number) {
+      return raise(NumberPickedEvent(number));
+      }
+   }
+   ```
+
+2. Subscribe to the event:
+   ```dart
+   Future<void> main() async {
+      // Create a new mediator, this should only be needed once per your application.
+      Mediator mediator = Mediator();
+
+      // Subscribe to the event, the callback will be called when the event is raised.
+      // You DO NOT have to unsubscribe, [WeakReference] will take care of it for you.
+      mediator.subscribe(
+         (NumberPickedEvent event) async =>
+            print("Number picked #1: ${event.number}"),
+      );
+   }
+   ```
+
+3. Raise the event:
+   ```dart
+   await mediator.raise(NumberPickedEvent(123));
+
+   // If you implemented the optional extension method, then you can do this instead.
+   await mediator.raiseNumberPicked(123);
+   ```
+
+4. Optionally unsubscribe from the event yourself instead of leaving it to Dart:
+   ```dart
+   // Get the subscription token from the [subscribe] function.
+   EventSubscription subscription = mediator.subscribe(
+      (NumberPickedEvent event) async =>
+         print("Number picked #2: ${event.number}"),
+   );
+
+   // In order to unsubscribe you just pass in the subscription returned by [subscribe].
+   mediator.unsubscribe(subscription);
+   ```
+
+The callbacks that you've subscribed with will be called in the order that they
+were subscribed in.
