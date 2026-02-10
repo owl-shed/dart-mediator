@@ -94,6 +94,13 @@ class Mediator {
     return await typedhandler.handle(command);
   }
 
+  /// Subscribes a [callback] to be executed when the [TEvent] is raised.
+  ///
+  /// ```dart
+  /// mediator.subscribe((TEvent event) async => doStuff(event));
+  /// ```
+  ///
+  /// Events are raised with the [raise] function on the [Mediator].
   void subscribe<TEvent extends IEvent>(EventFuction<TEvent> callback) {
     List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
     if (subscribers == null) {
@@ -113,6 +120,9 @@ class Mediator {
     subscribers.add(ref);
   }
 
+  /// Raises the given [event].
+  ///
+  /// In order to subscribe to events use the [subscribe] function on the [Mediator].
   Future<void> raise<TEvent extends IEvent>(TEvent event) async {
     List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
     if (subscribers == null) return;

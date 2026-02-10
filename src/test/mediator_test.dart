@@ -1,7 +1,9 @@
-import 'package:owl_mediator/mediator.dart';
+import 'package:test/test.dart';
+
+import 'package:owl_mediator/events.dart';
 import 'package:owl_mediator/queries.dart';
 import 'package:owl_mediator/commands.dart';
-import 'package:test/test.dart';
+import 'package:owl_mediator/mediator.dart';
 
 class TestQueryHandler<TQuery extends IQuery<TResult>, TResult>
     implements IQueryHandler<TQuery, TResult> {
@@ -30,6 +32,8 @@ class TestCommandHandler<TCommand extends ICommand<TResult>, TResult>
 class TestQuery<TResult> implements IQuery<TResult> {}
 
 class TestCommand<TResult> implements ICommand<TResult> {}
+
+class TestEvent implements IEvent {}
 
 // No AAA cause dart makes it annoying at times :(
 
@@ -101,6 +105,38 @@ void main() {
 
           expect(result, equals(expectedResult));
         });
+      });
+    });
+
+    group(".raise()", () {
+      test(" no errors if no subscribers.", () {
+        Mediator mediator = Mediator();
+
+        mediator.raise(TestEvent());
+      });
+
+      test(" invokes single callback with correct event value.", () async {
+        Mediator mediator = Mediator();
+        TestEvent? result;
+        TestEvent expected = TestEvent();
+
+        mediator.subscribe((TestEvent event) async => result = event);
+        await mediator.raise(expected);
+
+        expect(identical(result, expected), true);
+      });
+
+      test(" invokes multiple callbacks with correct order.", () async {
+        Mediator mediator = Mediator();
+
+        List<int> results = [];
+
+        mediator.subscribe((TestEvent event) async => results.add(1));
+        mediator.subscribe((TestEvent event) async => results.add(2));
+
+        await mediator.raise(TestEvent());
+
+        expect(results, equals([1, 2]));
       });
     });
   });
