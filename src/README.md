@@ -40,6 +40,6 @@ Check out the other examples for more in-depth explanations.
 ## Additional information
 
 This package is maintained over at
-[github.com/owl-shed/dart_mediator](https://github.com/owl-shed/dart_mediator),
+[github.com/owl-shed/dart-mediator](https://github.com/owl-shed/dart-mediator),
 I probably won't accept code PRs but who knows, if you find an issue then let
 me know.
