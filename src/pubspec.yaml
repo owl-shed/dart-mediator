@@ -1,8 +1,22 @@
+# Package metadata
 name: owl_mediator
 description: An implementation of the architectural mediator pattern, with CQRS support.
 version: 1.0.0
+homepage: https://github.com/owl-shed/dart-mediator
 repository: https://github.com/owl-shed/dart-mediator
+topics:
+  - architecture
+  - clean-architecture
+  - cross-platform
+  - async
+  - mediator
 
+# Author info
+funding:
+  - https://ko-fi.com/nightowl286
+  - https://github.com/sponsors/nightowl286
+
+# Package details
 environment:
   sdk: ^3.10.8
 
