@@ -45,7 +45,7 @@ The `Mediator` class acts as the main entry point for this package, it doesn't
 have any complex dependencies, and in order to use it you just have to create
 an instance of it:
 ```dart
-void main() async {
+Future<void> main() async {
   // Create the mediator.
   Mediator mediator = Mediator();
 

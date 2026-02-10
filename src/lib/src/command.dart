@@ -41,7 +41,7 @@ abstract interface class ICommand<TResult> implements IRequest<TResult> {}
 ///   }
 /// }
 ///
-/// void main() async {
+/// Future<void> main() async {
 ///   // Create a new mediator, this should only be needed once per your application.
 ///   Mediator mediator = Mediator();
 ///

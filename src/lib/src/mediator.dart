@@ -4,7 +4,7 @@ import 'command.dart';
 /// An implementation for the architectural mediator pattern, with CQRS support.
 ///
 /// ```dart
-/// void main() async {
+/// Future<void> main() async {
 ///   // Create a new mediator, this should only be needed once per your application.
 ///   Mediator mediator = Mediator();
 ///

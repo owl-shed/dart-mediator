@@ -17,7 +17,7 @@ support. \
 A simple example of how to use the mediator class.
 
 ```dart
-void main() async {
+Future<void> main() async {
   // Create a new mediator, this should only be needed once per your application.
   Mediator mediator = Mediator();
 
