@@ -99,6 +99,14 @@ class Mediator {
     if (subscribers == null) {
       subscribers = [];
       _eventSubscribers[TEvent] = subscribers;
+    } else {
+      // This only cleans up the GC'd subscribers for the current event but I think that's okay.
+      List<WeakEventFunction> toRemove = [];
+      for (WeakEventFunction ref in subscribers) {
+        if (ref.target == null) toRemove.add(ref);
+      }
+
+      toRemove.forEach(subscribers.remove);
     }
 
     WeakEventFunction ref = WeakEventFunction(callback);
@@ -109,6 +117,7 @@ class Mediator {
     List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
     if (subscribers == null) return;
 
+    // This only cleans up the GC'd subscribers for the current event but I think that's okay.
     List<WeakEventFunction> toRemove = [];
     for (WeakEventFunction ref in subscribers) {
       Object? target = ref.target;
