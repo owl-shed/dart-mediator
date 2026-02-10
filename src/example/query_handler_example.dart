@@ -1,5 +1,5 @@
 // Required only when you're creating a query / query handler.
-import 'package:owl_mediator/query.dart';
+import 'package:owl_mediator/queries.dart';
 
 // Required when you want to use/initialise the mediator.
 import 'package:owl_mediator/mediator.dart';

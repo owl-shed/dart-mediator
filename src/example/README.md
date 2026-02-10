@@ -16,7 +16,7 @@ In order to execute commands through the `Mediator` you have to:
 1. Create your command:
    ```dart
    // Required only when you're creating a command / command handler.
-   import 'package:owl_mediator/command.dart';
+   import 'package:owl_mediator/commands.dart';
 
    // Create a new command, must implement ICommand<ResultType> only once.
    // The command only needs fields if your handler will require them.
@@ -30,7 +30,7 @@ In order to execute commands through the `Mediator` you have to:
 2. Then your command handler:
    ```dart
    // Required only when you're creating a command / command handler.
-   import 'package:owl_mediator/command.dart';
+   import 'package:owl_mediator/commands.dart';
 
    // Create a new handler for your command, each command should get one, and only one handler.
    // Multiple return types might be supported in the future.
@@ -95,7 +95,7 @@ In order to execute queries through the `Mediator` you have to:
 1. Create your query:
    ```dart
    // Required only when you're creating a query / query handler.
-   import 'package:owl_mediator/query.dart';
+   import 'package:owl_mediator/queries.dart';
 
    // Create a new query, must implement IQuery<ResultType> only once.
    // The query only needs fields if your handler will require them.
@@ -109,7 +109,7 @@ In order to execute queries through the `Mediator` you have to:
 2. Then your query handler:
    ```dart
    // Required only when you're creating a query / query handler.
-   import 'package:owl_mediator/query.dart';
+   import 'package:owl_mediator/queries.dart';
 
    // Create a new handler for your query, each query should get one, and only one handler.
    // Multiple return types might be supported in the future.

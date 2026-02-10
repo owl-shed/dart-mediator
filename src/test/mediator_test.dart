@@ -1,6 +1,6 @@
 import 'package:owl_mediator/mediator.dart';
-import 'package:owl_mediator/query.dart';
-import 'package:owl_mediator/command.dart';
+import 'package:owl_mediator/queries.dart';
+import 'package:owl_mediator/commands.dart';
 import 'package:test/test.dart';
 
 class TestQueryHandler<TQuery extends IQuery<TResult>, TResult>

@@ -1,5 +1,5 @@
 // Required only when you're creating a command / command handler.
-import 'package:owl_mediator/command.dart';
+import 'package:owl_mediator/commands.dart';
 
 // Required when you want to use/initialise the mediator.
 import 'package:owl_mediator/mediator.dart';
