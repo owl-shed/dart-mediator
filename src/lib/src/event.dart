@@ -24,18 +24,19 @@ import 'mediator.dart';
 ///   // Create a new mediator, this should only be needed once per your application.
 ///   Mediator mediator = Mediator();
 ///
-/// // Subscribe to the event, the callback will be called when the event is raised.
-/// // You DO NOT have to unsubscribe, [WeakReference] will take care of it for you.
-/// mediator.subscribe(
-///   (NumberPickedEvent event) async =>
-///       print("Number picked #1: ${event.number}"),
-/// );
-
-/// // Callbacks will be called in the order in which they are subscribed in.
-/// mediator.subscribe(
-///   (NumberPickedEvent event) async =>
-///       print("Number picked #2: ${event.number}"),
-/// );
+///   // Subscribe to the event, the callback will be called when the event is raised.
+///   // You DO NOT have to unsubscribe, [WeakReference] will take care of it for you.
+///   mediator.subscribe(
+///     (NumberPickedEvent event) async =>
+///         print("Number picked #1: ${event.number}"),
+///   );
+///
+///   // Callbacks will be called in the order in which they are subscribed in.
+///   // You can also manually unsubscribe if you wish to do it earlier for example.
+///   EventSubscription<NumberPickedEvent> subscription = mediator.subscribe(
+///     (NumberPickedEvent event) async =>
+///         print("Number picked #2: ${event.number}"),
+///   );
 ///
 ///   await mediator.raise(NumberPickedEvent(123));
 ///   // Prints:
@@ -44,6 +45,9 @@ import 'mediator.dart';
 ///
 ///   // If you implemented the optional extension method, then you can do this instead.
 ///   await mediator.raiseNumberPicked(123);
+///
+///   // In order to unsubscribe you just pass in the subscription returned by [subscribe].
+///   mediator.unsubscribe(subscription);
 /// }
 /// ```
 abstract interface class IEvent {}

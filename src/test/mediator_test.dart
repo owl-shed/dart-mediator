@@ -139,5 +139,35 @@ void main() {
         expect(results, equals([1, 2]));
       });
     });
+
+    group(".unsubscribe()", () {
+      test(" stops callback from being called.", () async {
+        Mediator mediator = Mediator();
+
+        List<int> results = [];
+
+        mediator.subscribe((TestEvent event) async => results.add(1));
+        EventSubscription<TestEvent> subscription = mediator.subscribe(
+          (TestEvent event) async => results.add(2),
+        );
+
+        mediator.unsubscribe(subscription);
+        await mediator.raise(TestEvent());
+
+        expect(results, equals([1]));
+      });
+
+      test(" no errors if not subscribed", () async {
+        Mediator mediator = Mediator();
+
+        // easiest way is to subscribe and then unsubscribe twice.
+        EventSubscription<TestEvent> subscription = mediator.subscribe(
+          (TestEvent event) async => {},
+        );
+        mediator.unsubscribe(subscription);
+
+        mediator.unsubscribe(subscription);
+      });
+    });
   });
 }

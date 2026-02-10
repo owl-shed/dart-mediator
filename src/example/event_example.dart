@@ -33,7 +33,8 @@ Future<void> main() async {
   );
 
   // Callbacks will be called in the order in which they are subscribed in.
-  mediator.subscribe(
+  // You can also manually unsubscribe if you wish to do it earlier for example.
+  EventSubscription<NumberPickedEvent> subscription = mediator.subscribe(
     (NumberPickedEvent event) async =>
         print("Number picked #2: ${event.number}"),
   );
@@ -45,4 +46,7 @@ Future<void> main() async {
 
   // If you implemented the optional extension method, then you can do this instead.
   await mediator.raiseNumberPicked(123);
+
+  // In order to unsubscribe you just pass in the subscription returned by [subscribe].
+  mediator.unsubscribe(subscription);
 }

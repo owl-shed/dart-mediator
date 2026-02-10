@@ -13,4 +13,4 @@ import 'commands.dart';
 import 'queries.dart';
 import 'src/mediator.dart';
 
-export 'src/mediator.dart' show Mediator;
+export 'src/mediator.dart' show Mediator, EventSubscription;
