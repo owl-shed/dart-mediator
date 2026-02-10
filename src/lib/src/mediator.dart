@@ -5,11 +5,16 @@ import 'event.dart';
 typedef EventFuction<T> = Future<void> Function(T);
 typedef WeakEventFunction = WeakReference<Object>;
 
-// Represents a token to an event subscription, can be used to manually unsubscribe from an event.
-class EventSubscription<T extends IEvent> {
+/// Represents a token to an event subscription, can be used to manually unsubscribe from an event.
+///
+/// ```dart
+/// mediator.unsubscribe(subscription);
+/// ```
+class EventSubscription {
+  final Type _eventType;
   final WeakEventFunction _reference;
 
-  EventSubscription._(this._reference);
+  EventSubscription._(this._eventType, this._reference);
 }
 
 /// An implementation for the architectural mediator pattern, with CQRS support.
@@ -108,7 +113,7 @@ class Mediator {
   /// ```
   ///
   /// Events are raised with the [raise] function on the [Mediator].
-  EventSubscription<TEvent> subscribe<TEvent extends IEvent>(
+  EventSubscription subscribe<TEvent extends IEvent>(
     EventFuction<TEvent> callback,
   ) {
     List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
@@ -128,13 +133,12 @@ class Mediator {
     WeakEventFunction ref = WeakEventFunction(callback);
     subscribers.add(ref);
 
-    return EventSubscription<TEvent>._(ref);
+    return EventSubscription._(TEvent, ref);
   }
 
-  void unsubscribe<TEvent extends IEvent>(
-    EventSubscription<TEvent> subscription,
-  ) {
-    List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
+  void unsubscribe(EventSubscription subscription) {
+    List<WeakEventFunction>? subscribers =
+        _eventSubscribers[subscription._eventType];
     if (subscribers == null) return;
 
     List<WeakEventFunction> toRemove = [subscription._reference];
@@ -145,7 +149,7 @@ class Mediator {
     }
 
     toRemove.forEach(subscribers.remove);
-    if (subscribers.isEmpty) _eventSubscribers.remove(TEvent);
+    if (subscribers.isEmpty) _eventSubscribers.remove(subscription._eventType);
   }
 
   /// Raises the given [event].

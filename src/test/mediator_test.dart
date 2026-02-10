@@ -147,7 +147,7 @@ void main() {
         List<int> results = [];
 
         mediator.subscribe((TestEvent event) async => results.add(1));
-        EventSubscription<TestEvent> subscription = mediator.subscribe(
+        EventSubscription subscription = mediator.subscribe(
           (TestEvent event) async => results.add(2),
         );
 
@@ -161,7 +161,7 @@ void main() {
         Mediator mediator = Mediator();
 
         // easiest way is to subscribe and then unsubscribe twice.
-        EventSubscription<TestEvent> subscription = mediator.subscribe(
+        EventSubscription subscription = mediator.subscribe(
           (TestEvent event) async => {},
         );
         mediator.unsubscribe(subscription);

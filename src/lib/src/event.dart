@@ -33,7 +33,7 @@ import 'mediator.dart';
 ///
 ///   // Callbacks will be called in the order in which they are subscribed in.
 ///   // You can also manually unsubscribe if you wish to do it earlier for example.
-///   EventSubscription<NumberPickedEvent> subscription = mediator.subscribe(
+///   EventSubscription subscription = mediator.subscribe(
 ///     (NumberPickedEvent event) async =>
 ///         print("Number picked #2: ${event.number}"),
 ///   );
