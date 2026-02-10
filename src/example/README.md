@@ -53,7 +53,7 @@ In order to execute commands through the `Mediator` you have to:
    import 'package:owl_mediator/mediator.dart';
 
    // OPTIONAL:
-   //	I recommend creating an extension method for your queries to make them
+   //	I recommend creating an extension method for your commands to make them
    //	a tiny bit nicer to run. This will hopefully be code-generated later on.
    extension ConvertToStringCommandMediator on Mediator {
      Future<String> convertToString(int number) {
