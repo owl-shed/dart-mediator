@@ -33,7 +33,9 @@ class TestQuery<TResult> implements IQuery<TResult> {}
 
 class TestCommand<TResult> implements ICommand<TResult> {}
 
-class TestEvent implements IEvent {}
+abstract class BaseTestEvent implements IEvent {}
+
+class TestEvent extends BaseTestEvent {}
 
 // No AAA cause dart makes it annoying at times :(
 
@@ -138,6 +140,23 @@ void main() {
 
         expect(results, equals([1, 2]));
       });
+
+      test(
+        " with base event type, always calls base event subscriber later.",
+        () async {
+          Mediator mediator = Mediator();
+          mediator.associateBaseEvent<TestEvent, BaseTestEvent>();
+
+          List<int> results = [];
+
+          mediator.subscribe((BaseTestEvent event) async => results.add(2));
+          mediator.subscribe((TestEvent event) async => results.add(1));
+
+          await mediator.raise(TestEvent());
+
+          expect(results, equals([1, 2]));
+        },
+      );
     });
 
     group(".unsubscribe()", () {

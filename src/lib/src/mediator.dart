@@ -37,6 +37,7 @@ class Mediator {
   final Map<Type, Object> _queryHandlers = {};
   final Map<Type, Object> _commandHandlers = {};
   final Map<Type, List<WeakEventFunction>> _eventSubscribers = {};
+  final Map<Type, List<Type>> _baseEventAssociations = {};
 
   /// Registers an [IQueryHandler] for a custom [IQuery] type.
   ///
@@ -156,7 +157,23 @@ class Mediator {
   ///
   /// In order to subscribe to events use the [subscribe] function on the [Mediator].
   Future<void> raise<TEvent extends IEvent>(TEvent event) async {
-    List<WeakEventFunction>? subscribers = _eventSubscribers[TEvent];
+    await _raiseForType(TEvent, event);
+    await _raiseForBaseTypes(TEvent, event);
+  }
+
+  Future<void> _raiseForBaseTypes(Type type, dynamic event) async {
+    List<Type>? baseTypes = _baseEventAssociations[type];
+    if (baseTypes == null) return;
+
+    for (Type baseType in baseTypes) {
+      // Depth first, maybe breadth first would be better?
+      await _raiseForType(baseType, event);
+      await _raiseForBaseTypes(baseType, event);
+    }
+  }
+
+  Future<void> _raiseForType(Type type, dynamic event) async {
+    List<WeakEventFunction>? subscribers = _eventSubscribers[type];
     if (subscribers == null) return;
 
     // This only cleans up the GC'd subscribers for the current event but I think that's okay.
@@ -169,11 +186,30 @@ class Mediator {
         continue;
       }
 
-      EventFuction<TEvent> callback = target as EventFuction<TEvent>;
+      dynamic callback = target;
       await callback.call(event);
     }
 
     toRemove.forEach(subscribers.remove);
-    if (subscribers.isEmpty) _eventSubscribers.remove(TEvent);
+    if (subscribers.isEmpty) _eventSubscribers.remove(type);
+  }
+
+  /// Associates a specific [Type] with it's base [Type].
+  ///
+  /// This can also be done for implemented interfaces rather than just for extended classes.
+  /// Multiple assocations for a type are allowed *(such as if you used interfaces)*.
+  /// Base event subscribers will always be called after the derived ones.
+  ///
+  /// ```dart
+  /// mediator.associateBaseEvent<MyDerivedEvent, MyBaseEvent>();
+  /// ```
+  void associateBaseEvent<TSuper extends TBase, TBase extends IEvent>() {
+    List<Type>? associations = _baseEventAssociations[TSuper];
+    if (associations == null) {
+      associations = [];
+      _baseEventAssociations[TSuper] = associations;
+    }
+
+    if (associations.contains(TBase) == false) associations.add(TBase);
   }
 }

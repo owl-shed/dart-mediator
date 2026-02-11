@@ -38,10 +38,10 @@ In order to execute commands through the `Mediator` you have to:
        implements ICommandHandler<ConvertToStringCommand, String> {
      @override
      Future<String> handle(ConvertToStringCommand request) {
-       // Put your handler implementation here.
-       // Handlers are async by default to allow for future middleware support.
-       String result = request.number.toString();
-       return Future.value(result);
+         // Put your handler implementation here.
+         // Handlers are async by default to allow for future middleware support.
+         String result = request.number.toString();
+         return Future.value(result);
      }
    }
    ```
@@ -57,7 +57,7 @@ In order to execute commands through the `Mediator` you have to:
    //	a tiny bit nicer to run. This will hopefully be code-generated later on.
    extension ConvertToStringCommandMediator on Mediator {
      Future<String> convertToString(int number) {
-       return runCommand(ConvertToStringCommand(number));
+         return runCommand(ConvertToStringCommand(number));
      }
    }
    ```
@@ -136,7 +136,7 @@ In order to execute queries through the `Mediator` you have to:
    //	a tiny bit nicer to run. This will hopefully be code-generated later on.
    extension GetAsStringQueryMediator on Mediator {
      Future<String> getAsString(int number) {
-       return runQuery(GetAsStringQuery(number));
+         return runQuery(GetAsStringQuery(number));
      }
    }
    ```
@@ -198,7 +198,7 @@ them.
    //	a tiny bit nicer to raise. This will hopefully be code-generated later on.
    extension NumberPickedEventMediator on Mediator {
       Future<void> raiseNumberPicked(int number) {
-      return raise(NumberPickedEvent(number));
+         return raise(NumberPickedEvent(number));
       }
    }
    ```
@@ -240,3 +240,82 @@ them.
 
 The callbacks that you've subscribed with will be called in the order that they
 were subscribed in.
+
+### Base event types
+
+It is also possible to subscribe to events of a base type, however for this
+there is a little bit of boilerplate that's needed *(which will hopefully be
+code generated later on).*
+
+1. Create your base event type:
+   ```dart
+   // Create the base event type, must implement IEvent.
+   // The event only needs fields if the event subscribers will require them.
+   abstract class MyBaseEvent implements IEvent {
+      final String name;
+
+      MyBaseEvent(this.name);
+   }
+   ```
+
+2. Make sure your derived event extends the base event:
+   ```dart
+   // Create a new derived event type, must implement IEvent (even if indirectly).
+   // The event only needs fields if the event subscribers will require them.
+   class NumberPickedEvent extends MyBaseEvent {
+      final int number;
+
+      NumberPickedEvent(this.number) : super("$NumberPickedEvent");
+   }
+   ```
+
+3. Register the base event type association *(this will hopefully be
+   code-generated in the future)*:
+   ```dart
+   void main() {
+      // Create a new mediator, this should only be needed once per your application.
+      Mediator mediator = Mediator();
+
+      // Add base event type association. Hopefully this will be code generated in the future.
+      // Dart doesn't currently have stable reflection that would allow for this to happen at runtime.
+      mediator.associateBaseEvent<NumberPickedEvent, MyBaseEvent>();
+   }
+   ```
+
+4. Subscribe to the events *(you don't have to subscribe to both)*:
+   ```dart
+   // Subscribe to base event.
+   mediator.subscribe(
+      (MyBaseEvent event) async => print("Event raised: ${event.name}"),
+   );
+
+   // Subscribe to the top level event.
+   mediator.subscribe(
+      (NumberPickedEvent event) async => print("Number picked: ${event.number}"),
+   );
+   ```
+
+5. Raise the event:
+   ```dart
+   // Raise the top level event, the base event will always be called later, even if it was registered first.
+   await mediator.raise(NumberPickedEvent(123));
+   // Prints:
+   // Number picked: 123
+   // Event raised: NumberPickedEvent
+   ```
+
+6. It is also possible to have multiple base types if you use interfaces
+   *(`implements` instead of `extends`)* when referring to your base types, this
+   system also supports that, and all you have to do is associate multiple base
+   events:
+   ```dart
+   mediator.associateBaseEvent<NumberPickedEvent, MyBaseEvent1>();
+   mediator.associateBaseEvent<NumberPickedEvent, MyBaseEvent2>();
+   ```
+
+   Currently the base event subscriptions are called in a depth first manner,
+   however this could switch to a breadth first manner in the future so don't
+   rely on this behaviour.
+
+   However the base event subscriptions will always be called after the derived
+   event subscriptions, and this shouldn't need to change in the future.
