@@ -1,3 +1,9 @@
+## 1.1.1
+
+- Limited the package to only have 5 topics to appease the `pub.dev` overlords. \
+  `dart pub publish --dry-run` should definitely warn about this.
+
+
 ## 1.1.0
 
 - **Breaking** - Changed mini-library names to their plurals to sound more
