@@ -7,10 +7,13 @@
 /// - `queries.dart`:
 /// 	- Use [IQuery] to define your queries and their result types.
 /// 	- Use [IQueryHandler] to implement the handlers for your queries.
+/// - `events.dart`:
+/// 	- Use [IEvent] to define your events.
 library;
 
 import 'commands.dart';
 import 'queries.dart';
+import 'events.dart';
 import 'src/mediator.dart';
 
 export 'src/mediator.dart' show Mediator, EventSubscription;
