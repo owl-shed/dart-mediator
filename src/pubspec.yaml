@@ -6,11 +6,10 @@ homepage: https://github.com/owl-shed/dart-mediator
 repository: https://github.com/owl-shed/dart-mediator
 topics:
   - architecture
-  - clean-architecture
   - cross-platform
-  - async
   - mediator
   - cqrs
+  - events
 
 # Author info
 funding:
